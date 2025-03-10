@@ -1,0 +1,47 @@
+<div class="min-h-screen flex items-center justify-center p-6"
+    style="background-image: url('https://images.pexels.com/photos/13259570/pexels-photo-13259570.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); background-size: cover; background-position: center;">
+    <div class="w-full max-w-lg bg-white p-8 rounded-xl shadow-2xl">
+        <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-8">Editar Producto</h2>
+        <form (ngSubmit)="actualizarProducto()" class="space-y-6">
+            <!-- Nombre del Producto -->
+            <div>
+                <label for="nombre" class="block text-lg font-medium text-gray-700">Nombre del Producto</label>
+                <input type="text" id="nombre" [(ngModel)]="producto.nombre" name="nombre"
+                    placeholder="Ingrese el nombre del producto" required
+                    class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <!-- Descripción -->
+            <div>
+                <label for="descripcion" class="block text-lg font-medium text-gray-700">Descripción</label>
+                <textarea id="descripcion" [(ngModel)]="producto.descripcion" name="descripcion" rows="4"
+                    placeholder="Descripción del producto" required
+                    class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+
+            <!-- URL de la imagen -->
+            <div>
+                <label for="imagenUrl" class="block text-lg font-medium text-gray-700">Imagen URL</label>
+                <input type="text" id="imagenUrl" [(ngModel)]="producto.imagenUrl" name="imagenUrl"
+                    placeholder="Ingrese la URL de la imagen" required
+                    class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <!-- Precio -->
+            <div>
+                <label for="precio" class="block text-lg font-medium text-gray-700">Precio</label>
+                <input type="number" id="precio" [(ngModel)]="producto.precio" name="precio"
+                    placeholder="Ingrese el precio" required
+                    class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <!-- Botón de Enviar -->
+            <div class="text-center">
+                <button type="submit"
+                    class="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors duration-300">
+                    Actualizar Producto
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

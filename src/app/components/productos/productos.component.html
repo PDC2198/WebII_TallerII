@@ -1,0 +1,101 @@
+<!-- Contenedor principal con el fondo -->
+<div class="container mx-auto p-6 relative"
+    style="background-image: url('https://images.pexels.com/photos/3255761/pexels-photo-3255761.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); background-size: cover; background-position: center;">
+    
+    <h2 class="text-4xl font-extrabold text-center text-black mb-10">Nuestros Productos</h2>
+
+    <!-- Botón para agregar un producto -->
+    <div class="flex justify-end mb-8">
+        <button [routerLink]="['/agregar-producto']"
+            class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+            Agregar Producto
+        </button>
+    </div>
+
+    <div class="text-right mb-6">
+        <button (click)="toggleModal()"
+            class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
+            🛒 Ver Carrito ({{ carrito.length }})
+        </button>
+    </div>
+
+    <!-- Fondo difuminado cuando el modal está abierto -->
+    <div *ngIf="modalAbierto" class="fixed inset-0 bg-black bg-opacity-50 z-40 backdrop-blur-lg"></div>
+
+    <!-- Modal del carrito -->
+    <div *ngIf="modalAbierto" class="fixed inset-0 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 class="text-xl font-bold text-center mb-4">🛍️ Carrito de Compras</h2>
+
+            <!-- Lista de productos en el carrito -->
+            <div *ngIf="carrito.length > 0">
+                <ul class="space-y-4">
+                    <li *ngFor="let producto of carrito; let i = index"
+                        class="flex justify-between items-center border-b pb-2">
+                        <span>{{ producto.nombre }} - ${{ producto.precio }}</span>
+                        <button (click)="eliminarDelCarrito(i)"
+                            class="text-red-600 font-bold hover:text-red-800">✖</button>
+                    </li>
+                </ul>
+
+                <!-- Botón para generar la factura -->
+                <div class="mt-4 text-center">
+                    <button (click)="generarFactura()"
+                        class="px-8 py-3 bg-green-500 text-white font-semibold rounded-full hover:bg-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        Generar Factura
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mensaje si el carrito está vacío -->
+            <div *ngIf="carrito.length === 0" class="text-center text-gray-500 mt-4">
+                🛒 Tu carrito está vacío.
+            </div>
+
+            <!-- Botón para cerrar el modal -->
+            <div class="mt-6 text-center">
+                <button (click)="toggleModal()"
+                    class="px-8 py-3 bg-gray-500 text-white font-semibold rounded-full hover:bg-gray-600 transition-all duration-300 transform hover:scale-105">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje si no hay productos -->
+    <div *ngIf="productos.length === 0" class="text-center text-gray-500 text-xl mt-10">
+        No hay productos disponibles.
+    </div>
+
+    <!-- Lista de productos -->
+    <div *ngIf="productos.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16">
+        <div *ngFor="let producto of productos"
+            class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200">
+            <img [src]="producto.imagenUrl || 'assets/placeholder.jpg'" alt="Imagen del producto"
+                class="w-full h-56 object-cover rounded-lg mb-6" />
+            <h3 class="text-2xl font-semibold text-gray-800 mb-2">{{ producto.nombre }}</h3>
+            <p class="text-gray-600 mb-4">{{ producto.descripcion }}</p>
+            <p class="text-xl font-semibold text-green-600">${{ producto.precio }}</p>
+
+            <div class="mt-6 flex justify-between items-center">
+                <!-- Editar Producto -->
+                <button [routerLink]="['/editar-producto', producto.id]"
+                    class="px-5 py-3 bg-yellow-500 text-white font-semibold rounded-full hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    Editar
+                </button>
+
+                <!-- Eliminar Producto -->
+                <button (click)="confirmarEliminacion(producto.id)"
+                    class="px-5 py-3 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    Eliminar
+                </button>
+            </div>
+
+            <!-- Botón para agregar al carrito (debajo de los botones Editar y Eliminar) -->
+            <button (click)="agregarAlCarrito(producto)"
+                class="px-5 py-3 bg-green-500 text-white font-semibold rounded-full hover:bg-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg w-full mt-4">
+                🛒 Agregar al Carrito
+            </button>
+        </div>
+    </div>
+</div>

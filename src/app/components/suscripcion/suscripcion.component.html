@@ -1,0 +1,59 @@
+<section class="py-20 bg-cover bg-center text-black text-center"
+    style="background-image: url('https://images.pexels.com/photos/3255761/pexels-photo-3255761.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');">
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24">
+        <h2 class="text-4xl font-extrabold mb-6">¡Suscríbete a nuestro plan!</h2>
+        <p class="text-xl mb-12">Recibe las últimas noticias, ofertas exclusivas y más, directamente en tu bandeja de
+            entrada.</p>
+
+        <div class="bg-white rounded-xl shadow-2xl p-10 max-w-xl mx-auto">
+            <form action="#" method="POST" class="space-y-6">
+                <!-- Nombre Completo -->
+                <div>
+                    <label for="fullName" class="block text-lg font-semibold text-gray-800">Nombre Completo</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Tu nombre completo"
+                        class="w-full p-4 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                </div>
+
+                <!-- Correo Electrónico -->
+                <div>
+                    <label for="email" class="block text-lg font-semibold text-gray-800">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" placeholder="Tu correo electrónico"
+                        class="w-full p-4 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                </div>
+
+                <!-- Teléfono -->
+                <div>
+                    <label for="phone" class="block text-lg font-semibold text-gray-800">Teléfono</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Tu número de teléfono"
+                        class="w-full p-4 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Preferencia de Noticias -->
+                <div>
+                    <label for="newsType" class="block text-lg font-semibold text-gray-800">Tipo de Noticias</label>
+                    <select id="newsType" name="newsType"
+                        class="w-full p-4 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="ofertas">Ofertas</option>
+                        <option value="novedades">Novedades</option>
+                        <option value="eventos">Eventos Especiales</option>
+                    </select>
+                </div>
+
+                <!-- Aceptación de Términos -->
+                <div class="flex items-center">
+                    <input type="checkbox" id="terms" name="terms" class="mr-2 text-blue-600" required>
+                    <label for="terms" class="text-sm text-gray-800">Acepto los <a href="#"
+                            class="text-blue-500">términos y condiciones</a>.</label>
+                </div>
+
+                <!-- Botón de Suscripción -->
+                <button type="submit"
+                    class="w-full bg-green-500 text-white py-3 rounded-md hover:bg-green-600 transition-all duration-300">
+                    Suscribirse
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
