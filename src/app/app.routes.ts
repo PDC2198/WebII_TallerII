@@ -6,11 +6,10 @@ import { ContactoComponent } from './components/contacto/contacto.component';
 import { SuscripcionComponent } from './components/suscripcion/suscripcion.component';
 import { AgregarProductoComponent } from './components/agregar-producto/agregar-producto.component';
 import { EditarProductoComponent } from './components/editar-producto/editar-producto.component';
-import { GaleriaProductosComponent } from './components/galeria-productos/galeria-productos.component';
 import { FacturaComponent } from './components/factura/factura.component';
-import { roleAuthGuard } from './guards/role-auth.guard';
 import { AccesoDenegadoComponent } from './components/acceso-denegado/acceso-denegado.component';
 import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -18,10 +17,10 @@ export const routes: Routes = [
     { path: 'nosotros', component: NosotrosComponent },
     { path: 'contacto', component: ContactoComponent },
     { path: 'suscripcion', component: SuscripcionComponent },
-    { path: 'agregar-producto', component: AgregarProductoComponent },
+    { path: 'agregar-producto', component: AgregarProductoComponent, canActivate: [AuthGuard] },
     { path: 'editar-producto/:id', component: EditarProductoComponent },
-    { path: 'galeria-productos', component: GaleriaProductosComponent },
     { path: 'login', component: LoginComponent },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
     {
         path: 'factura',
         component: FacturaComponent,

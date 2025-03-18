@@ -13,13 +13,4 @@ export class HomeComponent {
 
   constructor(private router: Router, private authService: AuthService) { }
 
-  explorarProductos(): void {
-    if (this.authService.estaAutenticado()) {
-      // Si el usuario está autenticado, redirige a productos
-      this.router.navigate(['/galeria-productos']);
-    } else {
-      // Si no está autenticado, redirige al login
-      this.router.navigate(['/login']);
-    }
-  }
 }

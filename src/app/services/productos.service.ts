@@ -1,72 +1,46 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-
-export interface Producto {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  imagenUrl: string;
-}
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Producto } from '../models/producto.model'
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductosService {
-  private storageKey = 'productos'; // Clave para acceder al LocalStorage
-  private productosSubject = new BehaviorSubject<Producto[]>(this.getProductos());
-  productos$ = this.productosSubject.asObservable();
+  private API_PRODUCTOS = 'http://localhost:8080/productos';
 
-  constructor() {
-    if (!this.getProductos().length) {
-      this.cargarProductosIniciales();
-    }
+  constructor(private http: HttpClient) {}
+
+  // Obtener todos los productos (Regresa un Observable con un arreglo de Productos)
+  getProductos(): Observable<Producto[]> {
+    return this.http.get<Producto[]>(this.API_PRODUCTOS);
   }
 
-  // Obtener productos desde LocalStorage
-  getProductos(): Producto[] {
-    const productos = localStorage.getItem(this.storageKey);
-    return productos ? JSON.parse(productos) : [];
+  // Crear un nuevo producto (Recibe un Producto y regresa un Observable de Producto)
+  postProductos(producto: Producto): Observable<Producto> {
+    return this.http.post<Producto>(`${this.API_PRODUCTOS}/guardarProducto`, producto);
   }
 
-  // Obtener un producto por su ID
-  getProductoById(id: number): Producto | undefined {
-    return this.getProductos().find(producto => producto.id === id);
+  // Actualizar un producto existente (Recibe un Producto y su ID, regresa el producto actualizado)
+  updateProducto(producto: Producto, id: number): Observable<Producto> {
+    return this.http.put<Producto>(`${this.API_PRODUCTOS}/actualizarProducto/${id}`, producto);
   }
 
-  // Agregar un nuevo producto
-  addProducto(producto: Producto): void {
-    const productos = [...this.getProductos(), producto];
-    this.actualizarProductos(productos);
+  // Obtener un producto por ID (Regresa un Observable de Producto)
+  getProductoById(id: number): Observable<Producto> {
+    return this.http.get<Producto>(`${this.API_PRODUCTOS}/${id}`);
+  }
+  
+
+  // Eliminar un producto (Recibe el ID y regresa una respuesta de eliminación)
+  eliminarProducto(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.API_PRODUCTOS}/eliminarProducto/${id}`);
   }
 
-  // Actualizar un producto
-  updateProducto(id: number, productoActualizado: Producto): void {
-    const productos = this.getProductos().map(p => p.id === id ? productoActualizado : p);
-    this.actualizarProductos(productos);
-  }
-
-  // Eliminar un producto
-  deleteProducto(id: number): void {
-    const productos = this.getProductos().filter(p => p.id !== id);
-    this.actualizarProductos(productos);
-  }
-
-  // Método privado para actualizar LocalStorage y emitir cambios
-  private actualizarProductos(productos: Producto[]): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(productos));
-    this.productosSubject.next(productos); // Emitir actualización a los suscriptores
-  }
-
-  // Cargar productos iniciales
-  private cargarProductosIniciales(): void {
-    const productosIniciales: Producto[] = [
-      { id: 1, nombre: "Producto 1", descripcion: "Descripción del producto 1", precio: 10, imagenUrl: "https://via.placeholder.com/150" },
-      { id: 2, nombre: "Producto 2", descripcion: "Descripción del producto 2", precio: 20, imagenUrl: "https://via.placeholder.com/150" },
-      { id: 3, nombre: "Producto 3", descripcion: "Descripción del producto 3", precio: 30, imagenUrl: "https://via.placeholder.com/150" },
-      { id: 4, nombre: "Producto 4", descripcion: "Descripción del producto 4", precio: 40, imagenUrl: "https://via.placeholder.com/150" },
-      { id: 5, nombre: "Producto 5", descripcion: "Descripción del producto 5", precio: 50, imagenUrl: "https://via.placeholder.com/150" }
-    ];
-    this.actualizarProductos(productosIniciales);
+  // Generar un reporte (Regresa un Observable de tipo Blob, por ejemplo un archivo PDF)
+  generarReporte(): Observable<Blob> {
+    return this.http.get<Blob>(`${this.API_PRODUCTOS}/reporte/productos`, {
+      responseType: 'blob' as 'json',  // Necesitamos especificar 'blob' para obtener un archivo binario
+    });
   }
 }

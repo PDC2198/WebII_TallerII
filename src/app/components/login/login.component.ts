@@ -7,20 +7,32 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports:[CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
   usuario: Usuario = { nombre: '', rol: '' };
+  contrasena: string = '';
   error: boolean = false;
+  requiereContrasena: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  // Método para detectar cambios en el rol
+  onRolChange(): void {
+    this.requiereContrasena = this.usuario.rol === 'admin';
+  }
+
   login(): void {
+    // Si es administrador, verifica la contraseña única
+    if (this.requiereContrasena && this.contrasena !== 'padcs') {
+      this.error = true;
+      return;
+    }
+
     if (this.authService.login(this.usuario)) {
-      // Si el login es exitoso, redirigir según el rol
       if (this.usuario.rol === 'admin') {
-        this.router.navigate(['/galeria-productos']);
+        this.router.navigate(['/productos']);
       } else {
         this.router.navigate(['/usuario']);
       }

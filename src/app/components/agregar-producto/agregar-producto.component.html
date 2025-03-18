@@ -1,47 +1,91 @@
-<div class="min-h-screen flex items-center justify-center p-6"
+<div class="max-w-6xl mx-auto p-6"
     style="background-image: url('https://images.pexels.com/photos/13259570/pexels-photo-13259570.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); background-size: cover; background-position: center;">
-    <div class="w-full max-w-lg bg-white p-8 rounded-xl shadow-2xl">
-        <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-8">Agregar Producto</h2>
-        <form (ngSubmit)="agregarProducto()" class="space-y-6">
-            <!-- Nombre del Producto -->
-            <div>
-                <label for="nombre" class="block text-lg font-medium text-gray-700">Nombre del Producto</label>
-                <input type="text" id="nombre" [(ngModel)]="nombre" name="nombre"
-                    placeholder="Ingrese el nombre del producto" required
-                    class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
+</div>>
+<!-- Lista de Productos -->
+<h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">📦 Productos Disponibles</h2>
 
-            <!-- Descripción -->
-            <div>
-                <label for="descripcion" class="block text-lg font-medium text-gray-700">Descripción</label>
-                <textarea id="descripcion" [(ngModel)]="descripcion" name="descripcion" rows="4"
-                    placeholder="Descripción del producto" required
-                    class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-            </div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let producto of productos"
+        class="bg-white dark:bg-gray-900 p-5 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <img [src]="producto.imagenUrl || 'https://via.placeholder.com/300'" alt="Imagen del producto"
+            class="w-full h-48 object-cover rounded-md mb-4 hover:scale-105 transition-transform duration-300">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ producto.nombre }}</h3>
+        <p class="text-gray-600 dark:text-gray-300 mb-2">{{ producto.descripcion }}</p>
+        <p class="mt-2 text-lg font-bold text-blue-600 dark:text-blue-400">${{ producto.precio }}</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">📦 Stock: <b>{{ producto.stock }}</b></p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">🏢 Proveedor: <b>{{ producto.proveedor?.nombre }}</b></p>
+    </div>
+</div>
 
-            <!-- URL de la imagen -->
+<!-- Formulario de Registro -->
+<h2 class="text-3xl font-bold text-gray-800 dark:text-white mt-10 mb-6 text-center">📝 Registrar Nuevo Producto</h2>
+
+<div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg">
+    <form #formulario="ngForm" (ngSubmit)="guardar(formulario)" class="space-y-6">
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Nombre -->
             <div>
-                <label for="imagenUrl" class="block text-lg font-medium text-gray-700">Imagen URL</label>
-                <input type="text" id="imagenUrl" [(ngModel)]="imagenUrl" name="imagenUrl"
-                    placeholder="Ingrese la URL de la imagen" required
-                    class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <label for="nombre" class="block text-sm font-medium text-gray-700 dark:text-gray-300">📌 Nombre</label>
+                <input type="text" id="nombre" name="nombre" [(ngModel)]="producto.nombre"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                    placeholder="Ingrese el nombre" required />
             </div>
 
             <!-- Precio -->
             <div>
-                <label for="precio" class="block text-lg font-medium text-gray-700">Precio</label>
-                <input type="number" id="precio" [(ngModel)]="precio" name="precio" placeholder="Ingrese el precio"
-                    required
-                    class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <label for="precio" class="block text-sm font-medium text-gray-700 dark:text-gray-300">💰 Precio</label>
+                <input type="number" id="precio" name="precio" [(ngModel)]="producto.precio"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                    placeholder="0.00" required />
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Stock -->
+            <div>
+                <label for="stock" class="block text-sm font-medium text-gray-700 dark:text-gray-300">📦 Stock</label>
+                <input type="number" id="stock" name="stock" [(ngModel)]="producto.stock"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                    placeholder="Cantidad disponible" required />
             </div>
 
-            <!-- Botón de Enviar -->
-            <div class="text-center">
-                <button type="submit"
-                    class="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors duration-300">
-                    Agregar Producto
-                </button>
+            <!-- URL Imagen -->
+            <div>
+                <label for="imagen" class="block text-sm font-medium text-gray-700 dark:text-gray-300">🖼️ URL
+                    Imagen</label>
+                <input type="text" id="imagen" name="imagen" [(ngModel)]="producto.imagenUrl"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                    placeholder="URL de la imagen del producto" />
             </div>
-        </form>
-    </div>
+        </div>
+
+        <!-- Descripción -->
+        <div>
+            <label for="descripcion" class="block text-sm font-medium text-gray-700 dark:text-gray-300">📝
+                Descripción</label>
+            <textarea id="descripcion" name="descripcion" [(ngModel)]="producto.descripcion"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                placeholder="Ingrese la descripción" required></textarea>
+        </div>
+
+        <!-- Proveedor -->
+        <div>
+            <label for="proveedor" class="block text-sm font-medium text-gray-700 dark:text-gray-300">🏢
+                Proveedor</label>
+            <select id="proveedor" name="proveedor" [(ngModel)]="producto.proveedor" required
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+                <option value="" disabled selected>Seleccione un proveedor</option>
+                <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor">{{ proveedor.nombre }}</option>
+            </select>
+        </div>
+
+        <!-- Botón de envío -->
+        <div class="flex justify-center">
+            <button type="submit" class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow-md 
+                           hover:bg-green-700 transition-colors duration-300 
+                           focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                ✅ Guardar Producto
+            </button>
+        </div>
+    </form>
 </div>

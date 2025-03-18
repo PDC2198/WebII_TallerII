@@ -40,19 +40,28 @@ export class AuthService {
     }
   }
 
-  // Obtener el usuario actual
+  // Obtener el usuario actual como un observable
   get usuario$() {
     return this.usuarioSubject.asObservable();
   }
 
+  // Obtener el usuario actual de forma síncrona
+  getUsuario(): Usuario | null {
+    return this.usuarioSubject.value;
+  }
+
   // Verificar si el usuario tiene un rol específico
   tieneRol(rol: string): boolean {
-    const usuario = this.usuarioSubject.value;
-    return usuario?.rol === rol;
+    return this.getUsuario()?.rol === rol;
+  }
+
+  // Nuevo método para verificar si el usuario es administrador
+  esAdmin(): boolean {
+    return this.tieneRol('admin');
   }
 
   // Verificar si el usuario está autenticado
   estaAutenticado(): boolean {
-    return !!this.usuarioSubject.value;
+    return !!this.getUsuario();
   }
 }
